@@ -55,9 +55,13 @@ class TouristsController extends Controller
         $item = Tourist::where('id', $tourist)->first();
         //それに付随するコメント情報を取得
         $comments = DB::table('comments')->where('tourist_id', $item->id)->get();
+        $items = [
+            'item' => $item,
+            'comments' => $comments
+        ];
         return response()->json([
             'message' => 'tourist_data got successfully',
-            'data' => $item
+            'data' => $items
         ], 200);
     }
 
