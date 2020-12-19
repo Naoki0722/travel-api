@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CommentsController extends Controller
@@ -14,7 +15,11 @@ class CommentsController extends Controller
      */
     public function index()
     {
-        //
+        $items = Comment::all();
+        return response()->json([
+            'message' => 'comment data got successfully',
+            'data' => $items
+        ], 200);
     }
 
     /**
@@ -25,7 +30,21 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comment = new Comment;
+        $now = Carbon::now();
+        $comment->tourist_id = $request->tourist_id;
+        $comment->name = $request->name;
+        $comment->title = $request->title;
+        $comment->review = $request->review;
+        $comment->comment = $request->comment;
+        $comment->image_path = $request->image_path;
+        $comment->created_at = $now;
+        $comment->updated_at = $now;
+        $comment->save();
+        return response() -> json([
+            'message' => 'positing comment successfully',
+            'data' => $comment
+        ],200);
     }
 
     /**

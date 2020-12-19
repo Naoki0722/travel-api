@@ -39,16 +39,16 @@ class PrefecturesController extends Controller
      * @param  \App\Models\Prefecture  $prefecture
      * @return \Illuminate\Http\Response
      */
-    public function show(Prefecture $prefecture)
+    public function show($prefecture)
     {
         // リクエストに応じ都道府県情報を取得
-        $pref = Prefecture::where('pref_number', $prefecture->pref_number)->first();
-        // // 都道府県テーブルと観光地テーブルを紐付け、その都道府県に所在する観光地のデータを取得
-        // $pref_data =DB::table('tourists')->where('pref_id', $pref->pref_number)->get();
-        // $items = [
-        //     'pref' => $pref,
-        //     'pref_data' => $pref_data
-        // ];
+        $pref = Prefecture::where('pref_number', $prefecture)->first();
+        // 都道府県テーブルと観光地テーブルを紐付け、その都道府県に所在する観光地のデータを取得
+        $pref_data =DB::table('tourists')->where('pref_id', $pref->pref_number)->get();
+        $items = [
+            'pref' => $pref,
+            'pref_data' => $pref_data
+        ];
         return response()->json([
             'data' => $items,
             'message' => 'tourist_data got successfully'
