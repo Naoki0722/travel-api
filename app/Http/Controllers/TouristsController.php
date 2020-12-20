@@ -35,9 +35,9 @@ class TouristsController extends Controller
     {
         //観光地データをインサートする
         $item = new Tourist;
-        $item->name = $request->name;
+        $item->place_name = $request->place_name;
         $item->description = $request->description;
-        $item->image_path = $request->image_path;
+        $item->place_image_path = $request->place_image_path;
         $item->pref_id = $request->pref_id;
         $item->save();
 

@@ -15,9 +15,9 @@ class CreateTouristsTable extends Migration
     {
         Schema::create('tourists', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('place_name');
             $table->string('description');
-            $table->string('image_path');
+            $table->string('place_image_path');
             $table->string('pref_id');
             $table->timestamps();
         });
