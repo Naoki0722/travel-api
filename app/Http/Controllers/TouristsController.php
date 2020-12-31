@@ -42,32 +42,33 @@ class TouristsController extends Controller
     public function store(Request $request)
     {
 
-        //観光地データをインサートする
-        //まずは、画像処理記載
-        $file_name = $request->tourist_img;
-        $file_name = preg_replace('/^data:image.*base64,/', '', $file_name);
-        $file_name = str_replace(' ', '+', $file_name);
-        $image_info = base64_decode($file_name);
-        $file_info = finfo_open(FILEINFO_MIME_TYPE);
-        $file_mine_type = finfo_buffer($file_info, $image_info);
-        $extenstions = [
-            'image/gif' => 'gif',
-            'image/jpeg' => 'jpeg',
-            'image/png' => 'png'
-        ];
-        //保存ファイル名はランダム表記
-        $random_text = Str::random(10);
-        $img_name = $random_text . '.' . $extenstions[$file_mine_type];
-        $store_fld = 'comments';
-        $store_file = sprintf('%s/%s', $store_fld, $img_name);
-        Storage::disk('s3')->put($store_file, $image_info);
-        $place_image_path = Storage::disk('s3')->url($store_file);
+        // //観光地データをインサートする
+        // //まずは、画像処理記載
+        // $file_name = $request->tourist_img;
+        // $file_name = preg_replace('/^data:image.*base64,/', '', $file_name);
+        // $file_name = str_replace(' ', '+', $file_name);
+        // $image_info = base64_decode($file_name);
+        // $file_info = finfo_open(FILEINFO_MIME_TYPE);
+        // $file_mine_type = finfo_buffer($file_info, $image_info);
+        // $extenstions = [
+        //     'image/gif' => 'gif',
+        //     'image/jpeg' => 'jpeg',
+        //     'image/png' => 'png'
+        // ];
+        // //保存ファイル名はランダム表記
+        // $random_text = Str::random(10);
+        // $img_name = $random_text . '.' . $extenstions[$file_mine_type];
+        // $store_fld = 'comments';
+        // $store_file = sprintf('%s/%s', $store_fld, $img_name);
+        // Storage::disk('s3')->put($store_file, $image_info);
+        // $place_image_path = Storage::disk('s3')->url($store_file);
 
         //観光地情報
         $item = new Tourist;
         $item->place_name = $request->place_name;
         $item->description = $request->description;
-        $item->place_image_path = $place_image_path;
+        $item->place_image_path = 'テスト';
+        // $item->place_image_path = $place_image_path;
         $item->pref_id = $request->pref_id;
         $item->save();
 
