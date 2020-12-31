@@ -42,12 +42,12 @@ class TouristsController extends Controller
     public function store(Request $request)
     {
 
-        // //観光地データをインサートする
-        // //まずは、画像処理記載
-        // $file_name = $request->tourist_img;
-        // $file_name = preg_replace('/^data:image.*base64,/', '', $file_name);
-        // $file_name = str_replace(' ', '+', $file_name);
-        // $image_info = base64_decode($file_name);
+        //観光地データをインサートする
+        //まずは、画像処理記載
+        $file_name = $request->tourist_img;
+        $file_name = preg_replace('/^data:image.*base64,/', '', $file_name);
+        $file_name = str_replace(' ', '+', $file_name);
+        $image_info = base64_decode($file_name);
         // $file_info = finfo_open(FILEINFO_MIME_TYPE);
         // $file_mine_type = finfo_buffer($file_info, $image_info);
         // $extenstions = [
@@ -63,14 +63,15 @@ class TouristsController extends Controller
         // Storage::disk('s3')->put($store_file, $image_info);
         // $place_image_path = Storage::disk('s3')->url($store_file);
 
-        //観光地情報
-        $item = new Tourist;
-        $item->place_name = $request->place_name;
-        $item->description = $request->description;
-        $item->place_image_path = 'テスト';
+
+
+        // //観光地情報
+        // $item = new Tourist;
+        // $item->place_name = $request->place_name;
+        // $item->description = $request->description;
         // $item->place_image_path = $place_image_path;
-        $item->pref_id = $request->pref_id;
-        $item->save();
+        // $item->pref_id = $request->pref_id;
+        // $item->save();
 
         // // 一緒にコメントも送る
         // //まずは、画像処理記載
@@ -103,7 +104,7 @@ class TouristsController extends Controller
 
         return response() -> json([
             'message' => 'tourist_data and comment created successfully',
-            'data' => $item,
+            'data' => $image_info,
             // 'commentData' => $comment
         ],200);
     }
