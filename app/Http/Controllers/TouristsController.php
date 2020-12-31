@@ -104,7 +104,7 @@ class TouristsController extends Controller
 
         return response() -> json([
             'message' => 'tourist_data and comment created successfully',
-            'data' => $store_file,
+            'data' => $file_mine_type,
             // 'commentData' => $comment
         ],200);
     }
