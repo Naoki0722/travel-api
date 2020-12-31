@@ -60,53 +60,52 @@ class TouristsController extends Controller
         $img_name = $random_text . '.' . $extenstions[$file_mine_type];
         $store_fld = 'comments';
         $store_file = sprintf('%s/%s', $store_fld, $img_name);
-        Storage::disk('local')->put($store_file, $image_info);
-        // Storage::disk('s3')->put($store_file, $image_info);
-        $place_image_path = Storage::disk('local')->url($store_file);
+        Storage::disk('s3')->put($store_file, $image_info);
+        $place_image_path = Storage::disk('s3')->url($store_file);
 
 
 
-        // //観光地情報
-        // $item = new Tourist;
-        // $item->place_name = $request->place_name;
-        // $item->description = $request->description;
-        // $item->place_image_path = $place_image_path;
-        // $item->pref_id = $request->pref_id;
-        // $item->save();
+        //観光地情報
+        $item = new Tourist;
+        $item->place_name = $request->place_name;
+        $item->description = $request->description;
+        $item->place_image_path = $place_image_path;
+        $item->pref_id = $request->pref_id;
+        $item->save();
 
-        // // 一緒にコメントも送る
-        // //まずは、画像処理記載
-        // $filename = $request->img;
-        // $filename = preg_replace('/^data:image.*base64,/', '', $filename);
-        // $filename = str_replace(' ', '+', $filename);
-        // $image = base64_decode($filename);
-        // $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        // $mine_type = finfo_buffer($finfo, $image);
-        // //保存ファイル名はランダム表記
-        // $random_str = Str::random(10);
-        // $filename = $random_str . '.' . $extenstions[$mine_type];
-        // $store_dir = 'comments';
-        // $storefile = sprintf('%s/%s', $store_dir, $filename);
-        // Storage::disk('s3')->put($storefile, $image);
-        // $image_path = Storage::disk('s3')->url($storefile);
+        // 一緒にコメントも送る
+        //まずは、画像処理記載
+        $filename = $request->img;
+        $filename = preg_replace('/^data:image.*base64,/', '', $filename);
+        $filename = str_replace(' ', '+', $filename);
+        $image = base64_decode($filename);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mine_type = finfo_buffer($finfo, $image);
+        //保存ファイル名はランダム表記
+        $random_str = Str::random(10);
+        $filename = $random_str . '.' . $extenstions[$mine_type];
+        $store_dir = 'comments';
+        $storefile = sprintf('%s/%s', $store_dir, $filename);
+        Storage::disk('s3')->put($storefile, $image);
+        $image_path = Storage::disk('s3')->url($storefile);
 
-        // //テキスト
-        // $comment = new Comment;
-        // $now = Carbon::now();
-        // $comment->tourist_id = $item->id;
-        // $comment->name = $request->name;
-        // $comment->title = $request->title;
-        // $comment->review = $request->review;
-        // $comment->comment = $request->comment;
-        // $comment->image_path = $image_path;
-        // $comment->created_at = $now;
-        // $comment->updated_at = $now;
-        // $comment->save();
+        //テキスト
+        $comment = new Comment;
+        $now = Carbon::now();
+        $comment->tourist_id = $item->id;
+        $comment->name = $request->name;
+        $comment->title = $request->title;
+        $comment->review = $request->review;
+        $comment->comment = $request->comment;
+        $comment->image_path = $image_path;
+        $comment->created_at = $now;
+        $comment->updated_at = $now;
+        $comment->save();
 
         return response() -> json([
             'message' => 'tourist_data and comment created successfully',
-            'data' => $place_image_path,
-            // 'commentData' => $comment
+            'data' => $item,
+            'commentData' => $comment
         ],200);
     }
 
