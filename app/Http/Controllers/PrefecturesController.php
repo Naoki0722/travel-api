@@ -9,71 +9,53 @@ use Illuminate\Support\Facades\DB;
 
 class PrefecturesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Request $request)
     {
-        $items = Prefecture::all();
+        $item = $request->all();
+        clock($item);
+        // リクエストに応じ都道府県情報を取得
+        $pref = Prefecture::where('pref_number', $item['pref'])->first();
+        // 都道府県テーブルと観光地テーブルを紐付け、その都道府県に所在する観光地のデータを取得
+        if (!empty($item['keyword'])) {
+            $pref_data = DB::table('tourists')
+            ->where('pref_id', $pref->pref_number)
+                ->where('place_name', 'LIKE', "%{$item['keyword']}%")
+                ->paginate(5);
+        } else {
+            $pref_data = DB::table('tourists')
+            ->where('pref_id', $pref->pref_number)
+                ->paginate(5);
+        }
         return response()->json([
-            'message' => 'OK',
-            'data' => $items
+            'data' => $pref_data,
+            'message' => 'tourist_data got successfully'
         ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Prefecture  $prefecture
-     * @return \Illuminate\Http\Response
-     */
     public function show($prefecture)
     {
-        // リクエストに応じ都道府県情報を取得
+        // SidePref.vueのための県情報表示
         $pref = Prefecture::where('pref_number', $prefecture)->first();
-        // 都道府県テーブルと観光地テーブルを紐付け、その都道府県に所在する観光地のデータを取得
-        $pref_data =DB::table('tourists')->where('pref_id', $pref->pref_number)->get();
-        $items = [
-            'pref' => $pref,
-            'pref_data' => $pref_data
-        ];
         return response()->json([
-            'data' => $items,
-            'message' => 'tourist_data got successfully'
+            'data' => $pref,
+            'message' => 'pref got successfully'
         ], 200);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Prefecture  $prefecture
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Prefecture $prefecture)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Prefecture  $prefecture
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Prefecture $prefecture)
     {
         //

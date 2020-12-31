@@ -27,7 +27,6 @@ class TouristsController extends Controller
             ->orderBy('review', 'desc')
             ->limit(3)
             ->get();
-        clock($tourists);
         return response()->json([
             'message' => 'tourist_datas got successfully',
             'data' => $tourists,
