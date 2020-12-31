@@ -21,7 +21,7 @@ class TouristsController extends Controller
     public function index()
     {
         $tourists = DB::table('tourists')
-            ->select(DB::raw('tourists.id,  avg(review) as review'))
+            ->select(DB::raw('pref_id,tourists.id, place_name , description, round(avg(review),1) as review'))
             ->join('comments', 'tourists.id', '=', 'comments.tourist_id')
             ->groupBy('tourists.id')
             ->get();
