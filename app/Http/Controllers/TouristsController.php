@@ -47,7 +47,7 @@ class TouristsController extends Controller
         $file_name = $request->tourist_img;
         $file_name = preg_replace('/^data:image.*base64,/', '', $file_name);
         $file_name = str_replace(' ', '+', $file_name);
-        $image_info = base64_decode($file_name);
+        // $image_info = base64_decode($file_name);
         // $file_info = finfo_open(FILEINFO_MIME_TYPE);
         // $file_mine_type = finfo_buffer($file_info, $image_info);
         // $extenstions = [
@@ -104,7 +104,7 @@ class TouristsController extends Controller
 
         return response() -> json([
             'message' => 'tourist_data and comment created successfully',
-            'data' => $image_info,
+            'data' => $file_name,
             // 'commentData' => $comment
         ],200);
     }
