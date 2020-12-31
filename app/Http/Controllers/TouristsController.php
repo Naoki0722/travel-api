@@ -71,39 +71,39 @@ class TouristsController extends Controller
         $item->pref_id = $request->pref_id;
         $item->save();
 
-        // 一緒にコメントも送る
-        //まずは、画像処理記載
-        $filename = $request->img;
-        $filename = preg_replace('/^data:image.*base64,/', '', $filename);
-        $filename = str_replace(' ', '+', $filename);
-        $image = base64_decode($filename);
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mine_type = finfo_buffer($finfo, $image);
-        //保存ファイル名はランダム表記
-        $random_str = Str::random(10);
-        $filename = $random_str . '.' . $extenstions[$mine_type];
-        $store_dir = 'comments';
-        $storefile = sprintf('%s/%s', $store_dir, $filename);
-        Storage::disk('s3')->put($storefile, $image);
-        $image_path = Storage::disk('s3')->url($storefile);
+        // // 一緒にコメントも送る
+        // //まずは、画像処理記載
+        // $filename = $request->img;
+        // $filename = preg_replace('/^data:image.*base64,/', '', $filename);
+        // $filename = str_replace(' ', '+', $filename);
+        // $image = base64_decode($filename);
+        // $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        // $mine_type = finfo_buffer($finfo, $image);
+        // //保存ファイル名はランダム表記
+        // $random_str = Str::random(10);
+        // $filename = $random_str . '.' . $extenstions[$mine_type];
+        // $store_dir = 'comments';
+        // $storefile = sprintf('%s/%s', $store_dir, $filename);
+        // Storage::disk('s3')->put($storefile, $image);
+        // $image_path = Storage::disk('s3')->url($storefile);
 
-        //テキスト
-        $comment = new Comment;
-        $now = Carbon::now();
-        $comment->tourist_id = $item->id;
-        $comment->name = $request->name;
-        $comment->title = $request->title;
-        $comment->review = $request->review;
-        $comment->comment = $request->comment;
-        $comment->image_path = $image_path;
-        $comment->created_at = $now;
-        $comment->updated_at = $now;
-        $comment->save();
+        // //テキスト
+        // $comment = new Comment;
+        // $now = Carbon::now();
+        // $comment->tourist_id = $item->id;
+        // $comment->name = $request->name;
+        // $comment->title = $request->title;
+        // $comment->review = $request->review;
+        // $comment->comment = $request->comment;
+        // $comment->image_path = $image_path;
+        // $comment->created_at = $now;
+        // $comment->updated_at = $now;
+        // $comment->save();
 
         return response() -> json([
             'message' => 'tourist_data and comment created successfully',
             'data' => $item,
-            'commentData' => $comment
+            // 'commentData' => $comment
         ],200);
     }
 
