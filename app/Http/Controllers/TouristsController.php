@@ -21,9 +21,9 @@ class TouristsController extends Controller
     public function index()
     {
         $tourists = DB::table('tourists')
-            ->select(DB::raw('pref_id,tourists.id,  avg(review) as review'))
+            ->select(DB::raw('tourists.id,  avg(review) as review'))
             ->join('comments', 'tourists.id', '=', 'comments.tourist_id')
-            ->groupBy('tourist_id')
+            ->groupBy('tourists.id')
             ->get();
         return response()->json([
             'message' => 'tourist_datas got successfully',
