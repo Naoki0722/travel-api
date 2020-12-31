@@ -60,7 +60,7 @@ class TouristsController extends Controller
         $img_name = $random_text . '.' . $extenstions[$file_mine_type];
         $store_fld = 'comments';
         $store_file = sprintf('%s/%s', $store_fld, $img_name);
-        // Storage::disk('s3')->put($store_file, $image_info);
+        $a = Storage::disk('s3')->put($store_file, $image_info);
         // $place_image_path = Storage::disk('s3')->url($store_file);
 
 
@@ -104,7 +104,7 @@ class TouristsController extends Controller
 
         return response() -> json([
             'message' => 'tourist_data and comment created successfully',
-            'data' => $file_mine_type,
+            'data' => $a,
             // 'commentData' => $comment
         ],200);
     }
