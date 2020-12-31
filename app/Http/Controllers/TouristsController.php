@@ -19,18 +19,27 @@ class TouristsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {        
+    {
         $tourists = DB::table('tourists')
-            ->select(DB::raw('pref_id,tourists.id, place_name , description, round(avg(review),1) as review'))
+            ->select(DB::raw('tourists.id, round(avg(review),1) as review'))
             ->join('comments', 'tourists.id', '=', 'comments.tourist_id')
             ->groupBy('tourist_id')
-            ->orderBy('review', 'desc')
-            ->limit(3)
             ->get();
         return response()->json([
             'message' => 'tourist_datas got successfully',
             'data' => $tourists,
         ], 200);
+        // $tourists = DB::table('tourists')
+        //     ->select(DB::raw('pref_id,tourists.id, place_name , description, round(avg(review),1) as review'))
+        //     ->join('comments', 'tourists.id', '=', 'comments.tourist_id')
+        //     ->groupBy('tourist_id')
+        //     ->orderBy('review', 'desc')
+        //     ->limit(3)
+        //     ->get();
+        // return response()->json([
+        //     'message' => 'tourist_datas got successfully',
+        //     'data' => $tourists,
+        // ], 200);
     }
 
     /**
