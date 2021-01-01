@@ -48,6 +48,18 @@ class PrefecturesController extends Controller
             'message' => 'pref got successfully'
         ], 200);
 
+        //リアルタイム検索テスト用のコード
+        // $pref = Prefecture::where('pref_number', $prefecture)->first();
+        // $pref_data = DB::table('tourists')->where('pref_id', $pref->pref_number)->get();
+        // $items = [
+        //     'pref' => $pref,
+        //     'pref_data' => $pref_data
+        // ];
+        // return response()->json([
+        //     'data' => $items,
+        //     'message' => 'tourist_data got successfully'
+        // ], 200);
+
     }
 
     public function update(Request $request, Prefecture $prefecture)
